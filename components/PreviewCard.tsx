@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { 
@@ -63,7 +62,7 @@ const PreviewCard: React.FC<PreviewCardProps> = ({ code, settings, cardRef }) =>
     return (
       <div className="flex items-center justify-between mb-6">
         {settings.title && (
-          <div className="text-[12px] font-medium opacity-50 select-none truncate">
+          <div className="text-[12px] font-medium opacity-50 select-none whitespace-nowrap">
             {settings.title}
           </div>
         )}
@@ -79,23 +78,25 @@ const PreviewCard: React.FC<PreviewCardProps> = ({ code, settings, cardRef }) =>
 
   return (
     <div 
-      className="flex items-center justify-center p-0 overflow-visible"
+      className="inline-block overflow-visible"
       style={{ 
         background: activeTheme.background,
-        minWidth: 'fit-content'
+        padding: 0,
+        margin: 0
       }}
     >
       <div 
         ref={cardRef}
-        className="relative flex items-center justify-center"
+        className="relative overflow-visible inline-block"
         style={{ 
           padding: `${settings.padding}px`,
           background: activeTheme.background,
-          width: 'max-content'
+          width: 'max-content',
+          height: 'max-content'
         }}
       >
         <div 
-          className={`rounded-xl border border-white/10 selection:bg-blue-500/40 selection:text-white`}
+          className="rounded-xl border border-white/10 selection:bg-blue-500/40 selection:text-white inline-block"
           style={{ 
             backgroundColor: activeTheme.codeBackground,
             boxShadow: settings.boxShadow ? '0 50px 100px -20px rgba(0, 0, 0, 0.6)' : 'none',
@@ -104,10 +105,10 @@ const PreviewCard: React.FC<PreviewCardProps> = ({ code, settings, cardRef }) =>
             overflow: 'visible'
           }}
         >
-          <div className="p-6 relative">
+          <div className="p-8 relative overflow-visible">
             {renderWindowHeader()}
             
-            <div className="font-mono-code leading-relaxed">
+            <div className="font-mono-code leading-relaxed overflow-visible">
               <SyntaxHighlighter
                 language={settings.language}
                 style={prismStyle}
@@ -119,24 +120,13 @@ const PreviewCard: React.FC<PreviewCardProps> = ({ code, settings, cardRef }) =>
                   background: 'transparent',
                   overflow: 'visible',
                   whiteSpace: 'pre',
+                  wordSpacing: 'normal',
+                  wordBreak: 'normal',
+                  minWidth: '100%',
                 }}
                 lineNumberStyle={{
                   opacity: 0.2,
-                  marginRight: '1.5rem',
+                  marginRight: '2rem',
                   fontSize: '0.9em',
                   userSelect: 'none',
-                  minWidth: '2em',
-                  textAlign: 'right'
-                }}
-              >
-                {code || '// Paste your code here...'}
-              </SyntaxHighlighter>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default PreviewCard;
+                  minWidth: '2.5em',

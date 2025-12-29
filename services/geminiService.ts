@@ -1,7 +1,7 @@
-
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
+// Always initialize with named parameter and process.env.API_KEY directly
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 export const detectLanguageAndPolish = async (code: string): Promise<{ language: string, polishedCode: string }> => {
   try {
