@@ -36,7 +36,7 @@ const PreviewCard: React.FC<PreviewCardProps> = ({ code, settings, cardRef }) =>
   const renderWindowHeader = () => {
     if (settings.windowStyle === 'none') {
        return settings.title ? (
-         <div className="mb-2 text-xs font-medium text-center opacity-40 select-none">
+         <div className="mb-2 text-xs font-medium text-center opacity-40 select-none pb-2 border-b border-white/5">
            {settings.title}
          </div>
        ) : null;
@@ -44,34 +44,34 @@ const PreviewCard: React.FC<PreviewCardProps> = ({ code, settings, cardRef }) =>
     
     if (settings.windowStyle === 'mac') {
       return (
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-6 relative">
           <div className="flex gap-2">
-            <div className="w-3 h-3 rounded-full bg-red-500"></div>
-            <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-            <div className="w-3 h-3 rounded-full bg-green-500"></div>
+            <div className="w-3 h-3 rounded-full bg-[#ff5f56] shadow-sm"></div>
+            <div className="w-3 h-3 rounded-full bg-[#ffbd2e] shadow-sm"></div>
+            <div className="w-3 h-3 rounded-full bg-[#27c93f] shadow-sm"></div>
           </div>
           {settings.title && (
-            <div className="absolute left-1/2 -translate-x-1/2 text-[11px] font-medium opacity-50 select-none truncate max-w-[50%]">
+            <div className="absolute left-1/2 -translate-x-1/2 text-[12px] font-medium opacity-50 select-none whitespace-nowrap">
               {settings.title}
             </div>
           )}
-          <div className="w-12"></div> {/* Spacer for symmetry */}
+          <div className="w-12"></div>
         </div>
       );
     }
     
     return (
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-6">
         {settings.title && (
-          <div className="text-[11px] font-medium opacity-50 select-none truncate max-w-[70%]">
+          <div className="text-[12px] font-medium opacity-50 select-none truncate">
             {settings.title}
           </div>
         )}
         {!settings.title && <div />}
-        <div className="flex gap-3 opacity-70">
+        <div className="flex gap-4 opacity-70">
           <div className="w-3 h-0.5 bg-slate-400 mt-2"></div>
-          <div className="w-3 h-3 border-2 border-slate-400"></div>
-          <div className="w-3 h-3 text-slate-400 text-[8px] flex items-center justify-center font-bold">✕</div>
+          <div className="w-3.5 h-3.5 border-2 border-slate-400"></div>
+          <div className="w-3.5 h-3.5 text-slate-400 text-[10px] flex items-center justify-center font-bold">✕</div>
         </div>
       </div>
     );
@@ -79,27 +79,32 @@ const PreviewCard: React.FC<PreviewCardProps> = ({ code, settings, cardRef }) =>
 
   return (
     <div 
-      className="flex items-center justify-center min-h-[400px] overflow-hidden rounded-lg p-10"
-      style={{ background: activeTheme.background }}
+      className="flex items-center justify-center p-0 overflow-visible"
+      style={{ 
+        background: activeTheme.background,
+        minWidth: 'fit-content'
+      }}
     >
       <div 
         ref={cardRef}
-        className="relative transition-all duration-300"
+        className="relative flex items-center justify-center"
         style={{ 
           padding: `${settings.padding}px`,
-          background: activeTheme.background
+          background: activeTheme.background,
+          width: 'max-content'
         }}
       >
         <div 
-          className={`overflow-hidden rounded-xl border border-white/10 transition-shadow duration-500 selection:bg-blue-500/40 selection:text-white`}
+          className={`rounded-xl border border-white/10 selection:bg-blue-500/40 selection:text-white`}
           style={{ 
             backgroundColor: activeTheme.codeBackground,
-            boxShadow: settings.boxShadow ? '0 25px 50px -12px rgba(0, 0, 0, 0.5)' : 'none',
+            boxShadow: settings.boxShadow ? '0 50px 100px -20px rgba(0, 0, 0, 0.6)' : 'none',
             minWidth: '400px',
-            maxWidth: '1000px'
+            width: 'max-content',
+            overflow: 'visible'
           }}
         >
-          <div className="p-4 relative">
+          <div className="p-6 relative">
             {renderWindowHeader()}
             
             <div className="font-mono-code leading-relaxed">
@@ -112,12 +117,16 @@ const PreviewCard: React.FC<PreviewCardProps> = ({ code, settings, cardRef }) =>
                   padding: 0,
                   fontSize: `${settings.fontSize}px`,
                   background: 'transparent',
+                  overflow: 'visible',
+                  whiteSpace: 'pre',
                 }}
                 lineNumberStyle={{
-                  opacity: 0.3,
-                  marginRight: '1rem',
-                  fontSize: '0.8em',
-                  userSelect: 'none'
+                  opacity: 0.2,
+                  marginRight: '1.5rem',
+                  fontSize: '0.9em',
+                  userSelect: 'none',
+                  minWidth: '2em',
+                  textAlign: 'right'
                 }}
               >
                 {code || '// Paste your code here...'}
