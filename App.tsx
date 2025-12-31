@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { toBlob, toPng } from 'html-to-image';
 import { 
@@ -15,18 +14,22 @@ import {
   ClipboardCheck,
   Link as LinkIcon
 } from 'lucide-react';
-import ControlPanel from './components/ControlPanel';
-import PreviewCard from './components/PreviewCard';
-import { SnippetSettings, Language } from './types';
-import { detectLanguageAndPolish, explainCode } from './services/geminiService';
+import ControlPanel from './components/ControlPanel.tsx';
+import PreviewCard from './components/PreviewCard.tsx';
+import { SnippetSettings, Language } from './types.ts';
+import { detectLanguageAndPolish, explainCode } from './services/geminiService.ts';
 
 const DEFAULT_CODE = `function highlightableCode() {
   // Use High-Quality PNG for Medium articles
-  const message = "Copy me from the image creator";
+  const message = "Copy me from the image creator 🚀";
   console.log(message);
 }
 
 highlightableCode();`;
+
+// Unicode-safe base64 helpers
+const toBase64 = (str: string) => btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (match, p1) => String.fromCharCode(parseInt(p1, 16))));
+const fromBase64 = (str: string) => decodeURIComponent(Array.prototype.map.call(atob(str), (c: string) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
 
 const App: React.FC = () => {
   const [code, setCode] = useState(DEFAULT_CODE);
@@ -62,7 +65,7 @@ const App: React.FC = () => {
         const language = params.get('language');
         
         if (encodedCode) {
-          setCode(atob(encodedCode));
+          setCode(fromBase64(encodedCode));
         }
         if (title || language) {
           setSettings(prev => ({
@@ -80,11 +83,15 @@ const App: React.FC = () => {
   // Update URL on changes
   useEffect(() => {
     const timeout = setTimeout(() => {
-      const params = new URLSearchParams();
-      params.set('code', btoa(code));
-      params.set('title', settings.title);
-      params.set('language', settings.language);
-      window.history.replaceState(null, '', `#${params.toString()}`);
+      try {
+        const params = new URLSearchParams();
+        params.set('code', toBase64(code));
+        params.set('title', settings.title);
+        params.set('language', settings.language);
+        window.history.replaceState(null, '', `#${params.toString()}`);
+      } catch (e) {
+        console.error("Failed to update URL state", e);
+      }
     }, 500);
     return () => clearTimeout(timeout);
   }, [code, settings.title, settings.language]);
@@ -184,9 +191,9 @@ const App: React.FC = () => {
           </div>
           <div>
             <h1 className="text-xl font-bold bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent leading-none">
-              Code Snippet Creator
+              CodeSnap Pro
             </h1>
-            <p className="text-[10px] text-slate-500 font-medium uppercase tracking-tighter mt-0.5">Shareable & High-Res</p>
+            <p className="text-[10px] text-slate-500 font-medium uppercase tracking-tighter mt-0.5 whitespace-nowrap">Shareable & High-Res</p>
           </div>
         </div>
         
@@ -212,7 +219,7 @@ const App: React.FC = () => {
             <span className="hidden sm:inline">AI Polish</span>
           </button>
 
-          <div className="h-6 w-[1px] bg-slate-800 mx-1" />
+          <div className="h-6 w-[1px] bg-slate-800 mx-1 hidden xs:block" />
 
           <button 
             onClick={handleCopyCodeText}

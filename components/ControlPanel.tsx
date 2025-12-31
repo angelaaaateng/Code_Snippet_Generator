@@ -1,7 +1,6 @@
-
 import React from 'react';
-import { SnippetSettings, Language } from '../types';
-import { THEMES, LANGUAGES } from '../constants';
+import { SnippetSettings, Language } from '../types.ts';
+import { THEMES, LANGUAGES } from '../constants.tsx';
 import { 
   Monitor, 
   Type, 

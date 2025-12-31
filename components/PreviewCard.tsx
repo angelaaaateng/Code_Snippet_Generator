@@ -9,8 +9,8 @@ import {
   oneDark, 
   synthwave84 
 } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { SnippetSettings } from '../types';
-import { THEMES } from '../constants';
+import { SnippetSettings } from '../types.ts';
+import { THEMES } from '../constants.tsx';
 
 interface PreviewCardProps {
   code: string;
@@ -130,3 +130,17 @@ const PreviewCard: React.FC<PreviewCardProps> = ({ code, settings, cardRef }) =>
                   fontSize: '0.9em',
                   userSelect: 'none',
                   minWidth: '2.5em',
+                  textAlign: 'right'
+                }}
+              >
+                {code || '// Paste your code here...'}
+              </SyntaxHighlighter>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default PreviewCard;

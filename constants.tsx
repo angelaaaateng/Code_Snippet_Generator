@@ -1,5 +1,4 @@
-
-import { AppTheme, Language } from './types';
+import { AppTheme, Language } from './types.ts';
 
 export const THEMES: AppTheme[] = [
   {
