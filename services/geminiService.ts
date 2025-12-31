@@ -1,4 +1,4 @@
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenAI, Type } from "@google/genai";
 
 // Always initialize with named parameter and process.env.API_KEY directly
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
@@ -6,19 +6,32 @@ const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 export const detectLanguageAndPolish = async (code: string): Promise<{ language: string, polishedCode: string }> => {
   try {
     const response = await ai.models.generateContent({
-      model: "gemini-3-flash-preview",
-      contents: `Analyze the following code snippet. 
-      1. Detect its programming language (return a short string like 'javascript', 'python', 'rust', etc.).
-      2. If it's messy or lacks comments, provide a "polished" version of it (better indentation, maybe a helpful comment).
-      Return the result as a JSON object with keys "language" and "polishedCode".
+      // Use gemini-3-pro-preview for complex coding tasks
+      model: "gemini-3-pro-preview",
+      contents: `Analyze the following code snippet:
       
-      Code:
       ${code}`,
       config: {
-        responseMimeType: "application/json"
+        responseMimeType: "application/json",
+        // Using recommended responseSchema for structured output
+        responseSchema: {
+          type: Type.OBJECT,
+          properties: {
+            language: {
+              type: Type.STRING,
+              description: "The detected programming language (e.g., 'javascript', 'python', 'rust')."
+            },
+            polishedCode: {
+              type: Type.STRING,
+              description: "The improved and polished version of the code with better formatting or comments."
+            }
+          },
+          required: ["language", "polishedCode"]
+        }
       }
     });
 
+    // response.text is a property, not a method
     const result = JSON.parse(response.text || '{}');
     return {
       language: result.language || 'javascript',
@@ -33,11 +46,13 @@ export const detectLanguageAndPolish = async (code: string): Promise<{ language:
 export const explainCode = async (code: string): Promise<string> => {
   try {
     const response = await ai.models.generateContent({
-      model: "gemini-3-flash-preview",
+      // Use gemini-3-pro-preview for complex coding tasks
+      model: "gemini-3-pro-preview",
       contents: `Briefly explain what this code snippet does in 2-3 sentences:
       
       ${code}`
     });
+    // response.text is a property, not a method
     return response.text || "No explanation available.";
   } catch (error) {
     console.error("Gemini Explanation Error:", error);
