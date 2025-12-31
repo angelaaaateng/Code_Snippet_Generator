@@ -46,15 +46,15 @@
 {
   "imports": {
     "react": "https://esm.sh/react@19.0.0",
-    "react/": "https://esm.sh/react@19.0.0/",
     "react-dom": "https://esm.sh/react-dom@19.0.0",
-    "react-dom/": "https://esm.sh/react-dom@19.0.0/",
     "react-dom/client": "https://esm.sh/react-dom@19.0.0/client",
     "@google/genai": "https://esm.sh/@google/genai@1.34.0",
     "lucide-react": "https://esm.sh/lucide-react@0.460.0?external=react",
     "html-to-image": "https://esm.sh/html-to-image@1.11.11",
-    "react-syntax-highlighter": "https://esm.sh/react-syntax-highlighter@15.5.0?external=react",
-    "react-syntax-highlighter/dist/esm/styles/prism": "https://esm.sh/react-syntax-highlighter@15.5.0/dist/esm/styles/prism?external=react",
+    "react-syntax-highlighter": "https://esm.sh/react-syntax-highlighter@15.6.1?external=react",
+    "react-syntax-highlighter/dist/esm/styles/prism": "https://esm.sh/react-syntax-highlighter@15.6.1/dist/esm/styles/prism?external=react",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/",
     "react-syntax-highlighter/": "https://esm.sh/react-syntax-highlighter@^16.1.0/"
   }
 }
@@ -67,7 +67,7 @@
             console.error('Global Error:', msg, 'at', url, ':', lineNo);
             const root = document.getElementById('root');
             if (root && root.innerHTML === '') {
-                root.innerHTML = '<div style="padding: 20px; color: #ef4444; font-family: sans-serif;"><h3>Application Error</h3><p>' + msg + '</p><button onclick="location.reload()" style="background: #3b82f6; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">Reload App</button></div>';
+                root.innerHTML = '<div style="padding: 20px; color: #ef4444; font-family: sans-serif; text-align: center; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #0b0e14;"><h3>Application Error</h3><p style="margin: 10px 0; opacity: 0.8; font-size: 14px;">' + msg + '</p><button onclick="location.reload()" style="background: #3b82f6; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600;">Reload App</button></div>';
             }
             return false;
         };
